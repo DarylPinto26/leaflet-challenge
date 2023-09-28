@@ -67,19 +67,21 @@ function createMap(earthquakeLayer){
        layers: [street, earthquakeLayer]
     });
 
-    let legend = L.control({position: "bottomright"});
+    let legend = L.control({position:'bottomright'});
 
-    legend.onAdd = function(myMap){
-        let legendDiv = L.DomUtil.create("div", "info legend"),
-            depthRange = [-10, 10, 30, 60, 90],
-            labels = [];
+    legend.onAdd = function(){
+        let div = L.DomUtil.create("div", "info legend"),
+            labels = ['<strong>Legend</strong>'];
+            let gradientColor = ["#2BD500", "#55AA00","#808000","#AA5500","#D52A00","#FF0000" ]
+            let depthRange = ['-10-10', '10-30', '30-50', '50-70','70-90', '90+']
 
         for (let i = 0; i < depthRange.length; i++) {
-            legendDiv.innerHTML +=
-                '<i style="background:' + Color(depthRange[i] + 1) + '"></i> ' +
-                depthRange[i] + (depthRange[i + 1] ? '&ndash;' + depthRange[i + 1] + '<br>' : '+');
-        } 
-        return legendDiv;
+            labels.push(
+                `<i style="background:${gradientColor[i]}"></i> ${depthRange[i]}`
+            );
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
         };
         legend.addTo(myMap);
 }
